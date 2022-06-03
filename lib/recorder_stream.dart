@@ -39,7 +39,6 @@ class RecorderStream {
   Stream<Uint8List> get audioStream => _audioStreamController.stream;
 
   void _eventListener(dynamic event) {
-    print('event');
     if (event == null) return;
     final String eventName = event["name"] ?? "";
     switch (eventName) {
