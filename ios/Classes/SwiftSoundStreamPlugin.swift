@@ -103,7 +103,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
         print("checkAndRequestPermission")
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.defaultToSpeaker, .allowBluetooth, .allowAirPlay, .allowBluetoothA2DP])
+            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth, .allowAirPlay, .allowBluetoothA2DP])
             try session.setActive(true)
 
             session.requestRecordPermission({(granted:Bool) in
