@@ -100,20 +100,10 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     /** ======== Plugin methods ======== **/
     
     private func checkAndRequestPermission(completion callback: @escaping ((Bool) -> Void)) {
-        print("checkAndRequestPermission")
-        AVAudioSession.sharedInstance().setCategory(.playAndRecord,
-                                            mode: .default,
-                                             options: [.allowBluetoothA2DP,
-                                                       .mixWithOthers,
-                                                       .defaultToSpeaker,
-                                                       .allowAirPlay])
-        AVAudioSession.sharedInstance().setActive(true)
-
         if (hasPermission) {
             callback(hasPermission)
             return
         }
-        
         var permission: AVAudioSession.RecordPermission
         #if swift(>=4.2)
         permission = AVAudioSession.sharedInstance().recordPermission
@@ -205,6 +195,8 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
         mAudioEngine.inputNode.removeTap(onBus: mRecordBus)
         let input = mAudioEngine.inputNode
         let inputFormat = input.outputFormat(forBus: mRecordBus)
+        let mixerNode = AVAudioMixerNode()
+        audioEngine.attach(mixerNode)
         let converter = AVAudioConverter(from: inputFormat, to: mRecordFormat!)!
         let ratio: Float = Float(inputFormat.sampleRate)/Float(mRecordFormat.sampleRate)
         
