@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
+import AudioKit
 
 public enum SoundStreamErrors: String {
     case FailedToRecord
