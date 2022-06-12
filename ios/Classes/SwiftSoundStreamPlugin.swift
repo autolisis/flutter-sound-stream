@@ -101,6 +101,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     
     private func checkAndRequestPermission(completion callback: @escaping ((Bool) -> Void)) {
         print("checkAndRequestPermission")
+        recordingSession = AVAudioSession.sharedInstance()
         if (hasPermission) {
             callback(hasPermission)
             return
@@ -108,9 +109,9 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
         
         var permission: AVAudioSession.RecordPermission
         #if swift(>=4.2)
-        permission = AVAudioSession.sharedInstance().recordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
+        permission = AVAudioSession.sharedInstance().recordPermission
         #else
-        permission = AVAudioSession.sharedInstance().recordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
+        permission = AVAudioSession.sharedInstance().recordPermission()
         #endif
         switch permission {
         case .granted:
@@ -125,7 +126,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
             break
         case .undetermined:
             print("undetermined")
-            AVAudioSession.sharedInstance().requestRecordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth) { [unowned self] allowed in
+            AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
                 if allowed {
                     self.hasPermission = true
                     print("undetermined true")
