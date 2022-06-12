@@ -100,7 +100,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     /** ======== Plugin methods ======== **/
     
     private func checkAndRequestPermission(completion callback: @escaping ((Bool) -> Void)) {
-
+        print("checkAndRequestPermission")
         if (hasPermission) {
             callback(hasPermission)
             return
@@ -108,9 +108,9 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
         
         var permission: AVAudioSession.RecordPermission
         #if swift(>=4.2)
-        permission = AVAudioSession.sharedInstance().recordPermission
+        permission = AVAudioSession.sharedInstance().recordPermission()..setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
         #else
-        permission = AVAudioSession.sharedInstance().recordPermission()
+        permission = AVAudioSession.sharedInstance().recordPermission()..setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
         #endif
         switch permission {
         case .granted:
@@ -125,7 +125,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
             break
         case .undetermined:
             print("undetermined")
-            AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
+            AVAudioSession.sharedInstance().requestRecordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth) { [unowned self] allowed in
                 if allowed {
                     self.hasPermission = true
                     print("undetermined true")
@@ -170,9 +170,6 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     }
     
     private func initializeRecorder(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
-
-        print("initializeRecorder")
-        
         guard let argsArr = call.arguments as? Dictionary<String,AnyObject>
             else {
                 sendResult(result, FlutterError( code: SoundStreamErrors.Unknown.rawValue,
