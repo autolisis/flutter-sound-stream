@@ -228,7 +228,6 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     
     private func stopRecording(_ result: @escaping FlutterResult) {
         mAudioEngine.inputNode.removeTap(onBus: mRecordBus)
-        stopEngine();
         sendRecorderStatus(SoundStreamStatus.Stopped)
         result(true)
     }
