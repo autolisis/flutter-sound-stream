@@ -101,7 +101,22 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     
     private func checkAndRequestPermission(completion callback: @escaping ((Bool) -> Void)) {
         print("checkAndRequestPermission")
-        recordingSession = AVAudioSession.sharedInstance()
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.defaultToSpeaker, .allowBluetooth, .allowAirPlay, .allowBluetoothA2DP])
+            try session.setActive(true)
+
+            session.requestRecordPermission({(granted:Bool) in
+                if granted {
+                    Variables.appHasMicAccess = true
+                } else {
+                    Variables.appHasMicAccess = false
+                }
+            })
+        } catch let error as NSError {
+            print("AVAudioSession configuration error: \(error.localizedDescription)")
+        }
+
         if (hasPermission) {
             callback(hasPermission)
             return
