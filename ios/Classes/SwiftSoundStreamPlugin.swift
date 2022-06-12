@@ -169,6 +169,7 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     }
     
     private func initializeRecorder(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
         guard let argsArr = call.arguments as? Dictionary<String,AnyObject>
             else {
                 sendResult(result, FlutterError( code: SoundStreamErrors.Unknown.rawValue,
