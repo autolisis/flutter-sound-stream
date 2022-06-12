@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
+import AVAudioMixerNode
 
 public enum SoundStreamErrors: String {
     case FailedToRecord
