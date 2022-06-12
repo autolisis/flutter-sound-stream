@@ -108,9 +108,9 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
 
             session.requestRecordPermission({(granted:Bool) in
                 if granted {
-                    Variables.appHasMicAccess = true
+                    print("granted")
                 } else {
-                    Variables.appHasMicAccess = false
+                    print("denied access to mic")
                 }
             })
         } catch let error as NSError {
