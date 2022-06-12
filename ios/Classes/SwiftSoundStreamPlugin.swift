@@ -108,9 +108,9 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
         
         var permission: AVAudioSession.RecordPermission
         #if swift(>=4.2)
-        permission = AVAudioSession.sharedInstance().recordPermission()..setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
+        permission = AVAudioSession.sharedInstance().recordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
         #else
-        permission = AVAudioSession.sharedInstance().recordPermission()..setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
+        permission = AVAudioSession.sharedInstance().recordPermission().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
         #endif
         switch permission {
         case .granted:
@@ -243,8 +243,6 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     }
     
     private func initializePlayer(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
-        recordingSession = AVAudioSession.sharedInstance()
-        recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .allowBluetooth)
 
         guard let argsArr = call.arguments as? Dictionary<String,AnyObject>
             else {
