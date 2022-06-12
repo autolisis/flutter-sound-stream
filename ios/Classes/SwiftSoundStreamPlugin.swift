@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
-import AudioKit
+// import AudioKit
 
 public enum SoundStreamErrors: String {
     case FailedToRecord
@@ -195,9 +195,9 @@ public class SwiftSoundStreamPlugin: NSObject, FlutterPlugin {
     private func resetEngineForRecord() {
         mAudioEngine.inputNode.removeTap(onBus: mRecordBus)
         let input = mAudioEngine.inputNode
-        let inputFormat = input.outputFormat(forBus: mRecordBus)
-        let mixerNode = AVAudioMixerNode()
-        audioEngine.attach(mixerNode)
+        let inputFormat = input.inputFormat(forBus: mRecordBus)
+        // let mixerNode = AVAudioMixerNode()
+        // audioEngine.attach(mixerNode)
         let converter = AVAudioConverter(from: inputFormat, to: mRecordFormat!)!
         let ratio: Float = Float(inputFormat.sampleRate)/Float(mRecordFormat.sampleRate)
         
